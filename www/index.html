@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+        
+        <link rel="stylesheet" type="text/css" href="includes/bootstrap/css/bootstrap.min.css"/>
+        <link rel="stylesheet" type="text/css" href="includes/css/font-awesome.min.css"/>
+        <link rel="stylesheet" type="text/css" href="includes/css/stylesheet.css"/>
+        <script type="text/javascript" src="includes/js/jquery-2.1.0.min.js"></script>
+        <script type="text/javascript" src="includes/js/jquery.mobile-1.4.5.min.js"></script>
+        <script type="text/javascript" src="includes/bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="includes/js/script.js"></script>
+        
+        <title>Demo Application</title>
+    </head>
+    <body>
+    	<div class="stupid-jquery-mobile-bug-fix">
+    		<div class="navbar-notification">
+    			
+    		</div>
+    		<canvas name="main"> </canvas>
+    		<div class="settings">
+    			<div class="settings-inner">
+					<h3 style="text-align: left;">User Settings</h3>
+					<br>
+					<input type="text" name="username" class="settings-input" value="" placeholder="Username" maxlength="15" onfocus="$('.settings-error:eq(0)').removeClass('active');"/>
+					<p class="settings-input-text settings-error">
+						<span class="fa-stack" style="font-size: 10px;">
+							<i class="fa fa-circle-o fa-stack-2x"> </i>
+						  	<i class="fa fa-exclamation fa-stack-1x"> </i>
+						</span>
+						Uh Oh! Please make sure the name you entered isn't blank.
+					</p>
+					<br><br>
+					<input type="text" name="colour" class="settings-input" value="" placeholder="Theme Colour" maxlength="7" onkeydown="$('.settings-theme').removeClass('active');" onfocus="$('.settings-error:eq(1)').removeClass('active');"/>
+					<p class="settings-input-text settings-error">
+						<span class="fa-stack" style="font-size: 10px;">
+							<i class="fa fa-circle-o fa-stack-2x"> </i>
+						  	<i class="fa fa-exclamation fa-stack-1x"> </i>
+						</span>
+						Uh Oh! Please make sure there is a # at the beginning, and it's at least three characters long.
+					</p>
+					<br>
+					<div class="row" style="margin: 0;">
+						<div class="settings-theme" style="background-color: #222222;" onclick="$('.settings-theme').removeClass('active'); $(this).addClass('active'); $('input[name=&quot;colour&quot;]').val('#222222'); $('.settings-error:eq(1)').removeClass('active');"> </div>
+						<div class="settings-theme" style="background-color: #224422;" onclick="$('.settings-theme').removeClass('active'); $(this).addClass('active'); $('input[name=&quot;colour&quot;]').val('#224422'); $('.settings-error:eq(1)').removeClass('active');"> </div>
+						<div class="settings-theme" style="background-color: #222244;" onclick="$('.settings-theme').removeClass('active'); $(this).addClass('active'); $('input[name=&quot;colour&quot;]').val('#222244'); $('.settings-error:eq(1)').removeClass('active');"> </div>
+						<div class="settings-theme" style="background-color: #442222;" onclick="$('.settings-theme').removeClass('active'); $(this).addClass('active'); $('input[name=&quot;colour&quot;]').val('#442222'); $('.settings-error:eq(1)').removeClass('active');"> </div>
+						<div class="settings-theme" style="background-color: #442244;" onclick="$('.settings-theme').removeClass('active'); $(this).addClass('active'); $('input[name=&quot;colour&quot;]').val('#442244'); $('.settings-error:eq(1)').removeClass('active');"> </div>
+						<div class="settings-theme" style="background-color: #444422;" onclick="$('.settings-theme').removeClass('active'); $(this).addClass('active'); $('input[name=&quot;colour&quot;]').val('#444422'); $('.settings-error:eq(1)').removeClass('active');"> </div>
+						<div class="settings-theme" style="background-color: #224444;" onclick="$('.settings-theme').removeClass('active'); $(this).addClass('active'); $('input[name=&quot;colour&quot;]').val('#224444'); $('.settings-error:eq(1)').removeClass('active');"> </div>
+						<div class="settings-theme" style="background-color: #EFEFEF;" onclick="$('.settings-theme').removeClass('active'); $(this).addClass('active'); $('input[name=&quot;colour&quot;]').val('#EFEFEF'); $('.settings-error:eq(1)').removeClass('active');"> </div>
+					</div>
+					<br>
+					<h5 class="settings-input"><span style="color: #444;">Show Grid</span></h5>
+					<p class="settings-input-text">
+						A helpful grid to show where the quadris blocks will fall on the screen.
+						Check the box if you wish for this feature to be enabled.<br>
+						<input type="checkbox" name="grid" class="settings-input"/>
+					</p>
+					<br>
+					<h5 class="settings-input"><span style="color: #444;">Show Stats</span></h5>
+					<p class="settings-input-text">
+						Displays a counter at the top right of the page containing information 
+						about the game FPS and UPS.<br>
+						<input type="checkbox" name="nerd" class="settings-input"/>
+					</p>
+					<br><br>
+					<button class="btn-modern black" onclick="saveUserSettings()">
+	    				Save Settings
+	    			</button>
+					<br><br>
+					<h5 class="settings-input"><span style="color: #444;">Reset Stats</span></h5>
+					<p class="settings-input-text">
+						Highscore: <span class="high-score"> </span><br>
+						Games Played: <span class="games-played"> </span><br><br>
+						This will reset your high score and total games played value.
+						The action cannot be undone. 
+					</p>
+					<button class="btn-modern black" onclick="Game.confirmAction(1);">
+	    				Reset Stats
+	    			</button>
+	    			<br>
+	    			<button class="btn-modern black" onclick="Game.gameFirstTime = true; toggleGameState(2);">
+	    				Show Tutorial
+	    			</button>
+	    			<br>
+	    			<button class="btn-modern black" onclick="database.error(0);">
+	    				Database Error
+	    			</button>
+	    			<br><br>
+	    			<p class="settings-input-text" style="text-align: center;">
+						<a href="#" onclick="window.open('http://thenamrog.com','_system');" style="border-bottom: 1px solid black;">http://thenamrog.com/</a>
+						<br style="margin-bottom: 1vh;">
+						<a href="#" onclick="window.open('https://build.phonegap.com/','_system');" style="border-bottom: 1px solid black;">https://build.phonegap.com </a>
+					</p>
+    			</div>
+			</div>
+    		<div class="sidebar middle">
+    			<div class="sidebar-inner left" style="position: absolute; top: 50%; left: 0; right: 0; margin-top: -20px;">
+    				<button class="btn-modern" onclick="toggleGameState(1);">
+	    				Menu
+	    			</button>
+    			</div>
+    			<div class="sidebar-inner middle" style="position: absolute; top: 50%; left: 0; right: 0; margin-top: -105px;">
+    				<h1><b>QUADRIS</b></h1>
+    				<p>Welcome, <span class="user-name">User</span><br>
+    				Your highscore is: <span class="high-score">0</span></p>
+    				<br>
+	    			<button class="btn-modern" onclick="toggleGameState(2);">
+	    				Begin Game
+	    			</button><br>
+	    			<button class="btn-modern" onclick="toggleGameState(0);">
+	    				Settings
+	    			</button>
+    			</div>
+    			<div class="sidebar-inner right" style="position: absolute; top: 50%; left: 0; right: 0; margin-top: -250px;">
+    				<h4 class="page-header" style="margin-left: 10px; margin-right: 10px; max-width: 20vw;">Score<br><small id="score">0</small></h4>
+    				<br><br>
+    				<div class="next-piece">
+    					<canvas name="next-piece"> </canvas>
+    				</div>
+    				<br>
+    				<div class="down-piece" onclick="Game.push.trigger();">
+    					<i class="fa fa-angle-down"> </i>
+    				</div>
+    				<br>
+    				<h4 class="page-header" style="margin-left: 10px; margin-right: 10px; max-width: 20vw;">Level<br><small id="level">0</small></h4>
+    				<button class="btn-modern" onclick="toggleGameState(1);">
+	    				Menu
+	    			</button>
+	    			<button class="btn-modern" onclick="Game.confirmAction(0);">
+	    				Reset
+	    			</button>
+    			</div>
+    		</div>
+			<div id="stats" style="position: absolute; right: 0; top: 0; color: white;"> </div>
+    	</div>
+    	<div class="modal fade confirmPanel" tabindex="-1" data-backdrop="static" data-keyboard="false">
+			<div class="modal-dialog modal-sm">
+		    	<div class="modal-content">
+		      		<div class="modal-header">
+		        		<h4 class="modal-title">Are you sure of this?</h4>
+		      		</div>
+		      		<div class="modal-body">
+				        <p>Would you like to do this thing...?</p>
+			    	</div>
+			    	<div class="modal-footer">
+		        		<button type="button" class="btn btn-danger" onclick="$('.confirmPanel').modal('hide');" style="float: left; border-radius: 0px;">No Thanks!</button>
+		        		<button type="button" class="btn btn-primary" onclick="$('.confirmPanel').modal('show');" style="float: right; border-radius: 0px;">Yea Sure!</button>
+		      		</div>
+		    	</div>
+		  	</div>
+		</div>
+		<div class="firstTime" onclick="$('.firstTime').removeClass('active'); $('.firstTime span').removeClass('active'); Game.state = true;">
+	    	<span class="left" style="top: 5%;"><b>Game Controls:</b><br>Tap to rotate.<br>Swipe down to place.</span>
+	    	<span class="right" style="top: 34.5%;">Next piece to fall.</span>
+	    	<span class="right" style="top: 46.5%;">Drop a piece once.</span>
+	    	<span class="right" style="bottom: 17%;">Escape to Menu or<br>Reset the game.</span>
+	    	<span class="left" style="bottom: 3%;"><b>Press anywhere to start!</b></span>
+		</div>
+    	<script>app.initialize();</script>
+    </body>
+</html>
