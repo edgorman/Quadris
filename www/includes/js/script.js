@@ -34,44 +34,88 @@ var database = {
 	},
 	
 	error: function(err) {
-		//alert("Error processing SQL: "+err.message+". ("+err.code+")");
-		//var conf = confirm("Reset stored data about '"+Game.user.username+"'? \n(may fix the sql error)");
-		//if(conf) this.db.transaction(database.reset, database.error, database.success);
-		alert("Database Error: "+err.code+".\nDatabase has been reset, please perform the action again.\nIf you are seeing this message again, please report what you are attempting and the message below: \n'"+err.message+"'");
+		alert("Error processing SQL: "+err.message+". ("+err.code+")");
+		var conf = confirm("Reset stored data about '"+Game.user.username+"'? \n(may fix the sql error)");
+		if(conf) this.db.transaction(database.reset, database.error, database.success);
+		//alert("Database Error: "+err.code+".\nDatabase has been reset, please perform the action again.\nIf you are seeing this message again, please report what you are attempting and the message below: \n'"+err.message+"'");
 		
 		//TODO temporarily store variables
-		var tvusername = Game.user.username,
-			tvbgColor = Game.user.backgroundColor,
-			tvhighscore = Game.user.highscore,
-			tvgamesPlayed = Game.user.gamesPlayed,
-			tvshowGrid = Game.user.showGrid,
-			tvshowStats = Game.user.showStats,
-			tvpieceType = Game.piece.type,
-			tvpieceNext = Game.piece.next,
-			tvpieceX = Game.piece.x,
-			tvpieceY = Game.piece.y,
-			tvpieceR = Game.piece.rotation,
-			tvgameLevel = Game.gameLevel,
-			tvgameScore = Game.gameScore,
-			tvgameContent = Game.board.content;
+		/*
+		var tvusername = Game.user.username;
+		var tvbgColor = Game.user.backgroundColor;
+		var tvhighscore = Game.user.highscore;
+		var tvgamesPlayed = Game.user.gamesPlayed;
+		var tvshowGrid = Game.user.showGrid;
+		var tvshowStats = Game.user.showStats;
+		var tvpieceType = Game.piece.type;
+		var tvpieceNext = Game.piece.next;
+		var tvpieceX = Game.piece.x;
+		var tvpieceY = Game.piece.y;
+		var tvpieceR = Game.piece.rotation;
+		var tvgameLevel = Game.gameLevel;
+		var tvgameScore = Game.gameScore;
+		var tvgameContent = Game.board.content;
 		this.db.transaction(database.reset, database.error, database.success);
 		
-		Game.user.username = tvusername;
-		Game.user.backgroundColor = tvbgColor;
-		Game.user.highscore = tvhighscore;
-		Game.user.gamesPlayed = tvgamesPlayed;
-		Game.user.showGrid = tvshowGrid;
-		Game.user.showStats = tvshowStats;
-		Game.piece.type = tvpieceType;
-		Game.piece.next = tvpieceNext;
-		Game.piece.x = tvpieceX;
-		Game.piece.y = tvpieceY;
-		Game.piece.rotation = tvpieceR;
-		Game.gameLevel = tvgameLevel;
-		Game.gameScore = tvgameScore;
-		Game.board.content = tvgameContent;
-		this.db.transaction(updateUserContentData, database.error);
-		this.db.transaction(updateUserPlayedData, database.error);
+		setTimeout(function(){
+			Game.user.username = tvusername;
+			Game.user.backgroundColor = tvbgColor;
+			Game.user.highscore = tvhighscore;
+			Game.user.gamesPlayed = tvgamesPlayed;
+			Game.user.showGrid = tvshowGrid;
+			Game.user.showStats = tvshowStats;
+			Game.piece.type = tvpieceType;
+			Game.piece.next = tvpieceNext;
+			Game.piece.x = tvpieceX;
+			Game.piece.y = tvpieceY;
+			Game.piece.rotation = tvpieceR;
+			Game.gameLevel = tvgameLevel;
+			Game.gameScore = tvgameScore;
+			Game.board.content = tvgameContent;
+			
+			alert(Game.user.username + " " + tvusername);
+			database.db.transaction(updateUserContentData, database.error);
+			database.db.transaction(updateUserPlayedData, database.error);
+			
+			Game.user.username = tvusername;
+			Game.user.backgroundColor = tvbgColor;
+			Game.user.highscore = tvhighscore;
+			Game.user.gamesPlayed = tvgamesPlayed;
+			Game.user.showGrid = tvshowGrid;
+			Game.user.showStats = tvshowStats;
+			Game.piece.type = tvpieceType;
+			Game.piece.next = tvpieceNext;
+			Game.piece.x = tvpieceX;
+			Game.piece.y = tvpieceY;
+			Game.piece.rotation = tvpieceR;
+			Game.gameLevel = tvgameLevel;
+			Game.gameScore = tvgameScore;
+			Game.board.content = tvgameContent;
+			
+			$('#score').html(Game.gameScore);
+			$('#level').html(Game.gameLevel);
+			$('.user-name').html(Game.user.username);
+			$('input[name="username"]').val(Game.user.username);
+			
+			$('input[name="colour"]').val(Game.user.backgroundColor);
+			for(i = 0; i < $('.settings-theme').length; i++){
+				if(rgb2hex($('.settings-theme:eq('+i+')').css("background-color")) == Game.user.backgroundColor) $('.settings-theme:eq('+i+')').addClass("active");
+			}
+			
+			$('.high-score').html(Game.user.highscore);
+			$('.games-played').html(Game.user.gamesPlayed);
+			
+			if(Game.user.showGrid == "1") $('input[name="grid"]').prop('checked', true);
+			else $('input[name="grid"]').prop('checked', false);
+			
+			clearInterval(Game.statsClock);
+			if(Game.user.showStats == "1") {$('input[name="nerd"]').prop('checked', true); Game.statsClock = setInterval(function(){Game.stats(); Game.upsCount = 0, Game.fpsCount = 0;},1000);}
+			else $('input[name="nerd"]').prop('checked', false);
+			$('#stats').html("");
+			
+			$('.settings-error').removeClass('active');
+		},500);
+		*/
 	},
 	
 	success: function() {
