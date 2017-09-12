@@ -65,8 +65,11 @@
     <!--<gap:plugin name="org.apache.cordova.inappbrowser" />-->
     <!--<gap:plugin name="org.apache.cordova.media" />-->
     <!--<gap:plugin name="org.apache.cordova.network-information" />-->
-    <gap:plugin name="org.apache.cordova.splashscreen" />
-    <gap:plugin name="org.apache.cordova.vibration" />
+	
+    <!--<gap:plugin name="org.apache.cordova.splashscreen" />-->
+    <!--<gap:plugin name="org.apache.cordova.vibration" />-->
+    <plugin name="cordova-plugin-splashscreen" spec="~4.0.3" />
+    <plugin name="cordova-plugin-vibration" spec="~2.1.5" />
     
     <feature name="Notification">
     	<param name="android-package" value="org.apache.cordova.Notification" />
