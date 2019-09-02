@@ -18,6 +18,12 @@ Open your favourite internet browser and navigate to the following place:
 your/repo/directory/Quadris/index.html
 ```
 
+## Build
+Building the .apk file must be done through [Phonegap Build](https://build.phonegap.com/) using this public repository as the source:
+```
+https://github.com/edgorman/Quadris.git
+```
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
