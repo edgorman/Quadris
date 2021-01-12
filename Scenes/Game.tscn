@@ -1,0 +1,119 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Fonts/Roboto/Roboto-Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://Fonts/Roboto/Roboto-Bold.ttf" type="DynamicFontData" id=2]
+
+[sub_resource type="DynamicFont" id=1]
+size = 64
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 20
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 24
+font_data = ExtResource( 2 )
+
+[node name="Game" type="Node2D"]
+
+[node name="Background" type="Node2D" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="Background"]
+margin_left = -1.8877
+margin_top = -1.49829
+margin_right = 574.112
+margin_bottom = 1022.5
+color = Color( 0.0823529, 0.0823529, 0.0823529, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="UI" type="Node2D" parent="."]
+
+[node name="Title" type="Label" parent="UI"]
+margin_top = 320.0
+margin_right = 576.0
+margin_bottom = 396.0
+custom_fonts/font = SubResource( 1 )
+text = "Quadris"
+align = 1
+valign = 2
+uppercase = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI"]
+margin_top = 420.0
+margin_right = 576.0
+margin_bottom = 472.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Welcome" type="Label" parent="UI/VBoxContainer"]
+margin_right = 576.0
+margin_bottom = 24.0
+custom_fonts/font = SubResource( 2 )
+text = "Welcome, user"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Highscore" type="Label" parent="UI/VBoxContainer"]
+margin_top = 28.0
+margin_right = 576.0
+margin_bottom = 52.0
+custom_fonts/font = SubResource( 2 )
+text = "Your highscore is: 9000"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MenuButtons" type="Node2D" parent="UI"]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/MenuButtons"]
+margin_top = 640.0
+margin_right = 576.0
+margin_bottom = 714.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Start" type="Button" parent="UI/MenuButtons/VBoxContainer"]
+margin_right = 576.0
+margin_bottom = 35.0
+focus_mode = 0
+custom_fonts/font = SubResource( 3 )
+enabled_focus_mode = 0
+text = "Begin Game"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Settings" type="Button" parent="UI/MenuButtons/VBoxContainer"]
+margin_top = 39.0
+margin_right = 576.0
+margin_bottom = 74.0
+focus_mode = 0
+custom_fonts/font = SubResource( 3 )
+enabled_focus_mode = 0
+text = "Settings"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Score" type="Node2D" parent="."]
+
+[node name="Buttons" type="Node2D" parent="."]
+
+[node name="Emitters" type="Node2D" parent="."]
+
+[node name="Globals" type="Node2D" parent="."]
