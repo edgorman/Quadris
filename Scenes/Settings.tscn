@@ -1,0 +1,96 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Objects/Menu/Button.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Objects/Settings/Title.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Objects/Settings/TextInput.tscn" type="PackedScene" id=3]
+
+[node name="Settings" type="Node2D"]
+
+[node name="Background" type="Node2D" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="Background"]
+margin_right = 576.0
+margin_bottom = 1024.0
+color = Color( 0.937255, 0.937255, 0.937255, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="UI" type="Node2D" parent="."]
+
+[node name="SettingsPanels" type="HBoxContainer" parent="UI"]
+margin_right = 576.0
+margin_bottom = 1024.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LeftPanel" type="Node2D" parent="UI/SettingsPanels"]
+
+[node name="Background" type="Node2D" parent="UI/SettingsPanels/LeftPanel"]
+
+[node name="ColorRect" type="ColorRect" parent="UI/SettingsPanels/LeftPanel/Background"]
+margin_right = 128.0
+margin_bottom = 1024.0
+color = Color( 0.0823529, 0.0823529, 0.0823529, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MenuButtons" type="VBoxContainer" parent="UI/SettingsPanels/LeftPanel"]
+margin_right = 128.0
+margin_bottom = 1024.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Menu" parent="UI/SettingsPanels/LeftPanel/MenuButtons" instance=ExtResource( 1 )]
+margin_top = 494.0
+margin_bottom = 529.0
+text = "Menu"
+
+[node name="RightPanel" type="Node2D" parent="UI/SettingsPanels"]
+
+[node name="ScrollContainer" type="ScrollContainer" parent="UI/SettingsPanels/RightPanel"]
+margin_left = 136.0
+margin_right = 576.0
+margin_bottom = 1024.0
+scroll_horizontal_enabled = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/SettingsPanels/RightPanel/ScrollContainer"]
+margin_right = 440.0
+margin_bottom = 1016.0
+rect_min_size = Vector2( 440, 1016 )
+custom_constants/separation = 30
+
+[node name="Title" parent="UI/SettingsPanels/RightPanel/ScrollContainer/VBoxContainer" instance=ExtResource( 2 )]
+margin_right = 293.0
+text = "User Settings"
+
+[node name="TextInput" parent="UI/SettingsPanels/RightPanel/ScrollContainer/VBoxContainer" instance=ExtResource( 3 )]
+margin_top = 87.0
+margin_bottom = 167.0
+
+[node name="TextInput2" parent="UI/SettingsPanels/RightPanel/ScrollContainer/VBoxContainer" instance=ExtResource( 3 )]
+margin_top = 197.0
+margin_bottom = 277.0
+
+[node name="TextInput3" parent="UI/SettingsPanels/RightPanel/ScrollContainer/VBoxContainer" instance=ExtResource( 3 )]
+margin_top = 307.0
+margin_bottom = 387.0
+
+[node name="TextInput4" parent="UI/SettingsPanels/RightPanel/ScrollContainer/VBoxContainer" instance=ExtResource( 3 )]
+margin_top = 417.0
+margin_bottom = 497.0
+
+[node name="TextInput5" parent="UI/SettingsPanels/RightPanel/ScrollContainer/VBoxContainer" instance=ExtResource( 3 )]
+margin_top = 527.0
+margin_bottom = 607.0
+
+[node name="TextInput6" parent="UI/SettingsPanels/RightPanel/ScrollContainer/VBoxContainer" instance=ExtResource( 3 )]
+margin_top = 637.0
+margin_bottom = 717.0
