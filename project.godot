@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Quadris"
-run/main_scene="res://Scenes/App.tscn"
+run/main_scene="res://Scenes/Menu.tscn"
 config/icon="res://icon.png"
 
 [display]
@@ -28,6 +28,10 @@ window/size/test_height=512
 window/handheld/orientation="portrait"
 window/stretch/mode="2d"
 window/stretch/aspect="keep_width"
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
 
 [rendering]
 

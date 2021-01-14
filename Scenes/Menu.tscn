@@ -1,14 +1,16 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Fonts/Roboto/Roboto-Italic.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Objects/Menu/Title.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Objects/Menu/Label.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Objects/Menu/Button.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scripts/Menu.gd" type="Script" id=5]
 
 [sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 1 )
 
 [node name="Menu" type="Node2D"]
+script = ExtResource( 5 )
 
 [node name="Background" type="Node2D" parent="."]
 
@@ -60,17 +62,20 @@ text = "Your highscore is: 9000"
 margin_top = 640.0
 margin_right = 576.0
 margin_bottom = 714.0
+custom_constants/separation = 30
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Start" parent="UI/MenuButtons" instance=ExtResource( 4 )]
+[node name="StartGame" parent="UI/MenuButtons" instance=ExtResource( 4 )]
 margin_right = 576.0
 margin_bottom = 35.0
 text = "Start Game"
 
 [node name="Settings" parent="UI/MenuButtons" instance=ExtResource( 4 )]
-margin_top = 39.0
+margin_top = 65.0
 margin_right = 576.0
-margin_bottom = 74.0
+margin_bottom = 100.0
 text = "Settings"
+[connection signal="button_up" from="UI/MenuButtons/StartGame" to="." method="_on_StartGame_button_up"]
+[connection signal="button_down" from="UI/MenuButtons/Settings" to="." method="_on_Settings_button_down"]

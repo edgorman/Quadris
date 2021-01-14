@@ -1,3 +1,58 @@
-[gd_scene format=2]
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Objects/Menu/Button.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scripts/Game.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/Screen.tscn" type="PackedScene" id=3]
 
 [node name="Game" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Background" type="Node2D" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="Background"]
+margin_right = 576.0
+margin_bottom = 1024.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="UI" type="Node2D" parent="."]
+
+[node name="GamesPanel" type="HBoxContainer" parent="UI"]
+margin_right = 576.0
+margin_bottom = 1024.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LeftPanel" type="Node2D" parent="UI/GamesPanel"]
+
+[node name="Screen" parent="UI/GamesPanel/LeftPanel" instance=ExtResource( 3 )]
+
+[node name="RightPanel" type="Node2D" parent="UI/GamesPanel"]
+
+[node name="Background" type="Node2D" parent="UI/GamesPanel/RightPanel"]
+
+[node name="ColorRect" type="ColorRect" parent="UI/GamesPanel/RightPanel/Background"]
+margin_left = 448.0
+margin_right = 576.0
+margin_bottom = 1024.0
+color = Color( 0.0823529, 0.0823529, 0.0823529, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MenuButtons" type="VBoxContainer" parent="UI/GamesPanel/RightPanel"]
+margin_left = 448.0
+margin_right = 576.0
+margin_bottom = 1024.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Menu" parent="UI/GamesPanel/RightPanel/MenuButtons" instance=ExtResource( 1 )]
+margin_top = 494.0
+margin_bottom = 529.0
+text = "Menu"
+[connection signal="button_down" from="UI/GamesPanel/RightPanel/MenuButtons/Menu" to="." method="_on_Menu_button_down"]
