@@ -1,39 +1,48 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Objects/Menu/Button.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/Game.gd" type="Script" id=2]
-[ext_resource path="res://Scenes/Screen.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scenes/Controls.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scripts/GameLogic.gd" type="Script" id=4]
 
 [node name="Game" type="Node2D"]
 script = ExtResource( 2 )
 
 [node name="Background" type="Node2D" parent="."]
 
-[node name="ColorRect" type="ColorRect" parent="Background"]
+[node name="Color" type="ColorRect" parent="Background"]
 margin_right = 576.0
 margin_bottom = 1024.0
+mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="UI" type="Node2D" parent="."]
 
-[node name="GamesPanel" type="HBoxContainer" parent="UI"]
+[node name="Container" type="HBoxContainer" parent="UI"]
 margin_right = 576.0
 margin_bottom = 1024.0
+mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="LeftPanel" type="Node2D" parent="UI/GamesPanel"]
+[node name="GamePanel" type="Node2D" parent="UI/Container"]
+script = ExtResource( 4 )
 
-[node name="Screen" parent="UI/GamesPanel/LeftPanel" instance=ExtResource( 3 )]
+[node name="Controls" parent="UI/Container/GamePanel" instance=ExtResource( 3 )]
 
-[node name="RightPanel" type="Node2D" parent="UI/GamesPanel"]
+[node name="Timer" type="Timer" parent="UI/Container/GamePanel"]
+autostart = true
 
-[node name="Background" type="Node2D" parent="UI/GamesPanel/RightPanel"]
+[node name="Blocks" type="Node2D" parent="UI/Container/GamePanel"]
 
-[node name="ColorRect" type="ColorRect" parent="UI/GamesPanel/RightPanel/Background"]
+[node name="MenuPanel" type="Node2D" parent="UI/Container"]
+
+[node name="Background" type="Node2D" parent="UI/Container/MenuPanel"]
+
+[node name="Color" type="ColorRect" parent="UI/Container/MenuPanel/Background"]
 margin_left = 448.0
 margin_right = 576.0
 margin_bottom = 1024.0
@@ -42,7 +51,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MenuButtons" type="VBoxContainer" parent="UI/GamesPanel/RightPanel"]
+[node name="MenuButtons" type="VBoxContainer" parent="UI/Container/MenuPanel"]
 margin_left = 448.0
 margin_right = 576.0
 margin_bottom = 1024.0
@@ -51,8 +60,12 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Menu" parent="UI/GamesPanel/RightPanel/MenuButtons" instance=ExtResource( 1 )]
+[node name="Menu" parent="UI/Container/MenuPanel/MenuButtons" instance=ExtResource( 1 )]
 margin_top = 494.0
 margin_bottom = 529.0
 text = "Menu"
-[connection signal="button_down" from="UI/GamesPanel/RightPanel/MenuButtons/Menu" to="." method="_on_Menu_button_down"]
+[connection signal="input_event" from="UI/Container/GamePanel/Controls" to="UI/Container/GamePanel/Controls" method="_on_Controls_input_event"]
+[connection signal="move_block" from="UI/Container/GamePanel/Controls" to="UI/Container/GamePanel" method="_on_Controls_move_block"]
+[connection signal="rotate_block" from="UI/Container/GamePanel/Controls" to="UI/Container/GamePanel" method="_on_Controls_rotate_block"]
+[connection signal="timeout" from="UI/Container/GamePanel/Timer" to="UI/Container/GamePanel" method="_on_Timer_timeout"]
+[connection signal="button_down" from="UI/Container/MenuPanel/MenuButtons/Menu" to="." method="_on_Menu_button_down"]

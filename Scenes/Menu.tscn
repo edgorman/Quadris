@@ -14,7 +14,7 @@ script = ExtResource( 5 )
 
 [node name="Background" type="Node2D" parent="."]
 
-[node name="ColorRect" type="ColorRect" parent="Background"]
+[node name="Color" type="ColorRect" parent="Background"]
 margin_left = -1.8877
 margin_top = -1.49829
 margin_right = 574.112
