@@ -1,13 +1,13 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://Scripts/Block.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/L-Block.gd" type="Script" id=1]
 
 [node name="L-Block" type="Node2D"]
-scale = Vector2( 1.55, 1.55 )
 script = ExtResource( 1 )
 
 [node name="ColorRect" type="ColorRect" parent="."]
-margin_right = 32.0
+margin_left = -64.0
+margin_right = -32.0
 margin_bottom = 32.0
 color = Color( 0, 1, 1, 1 )
 __meta__ = {
@@ -15,8 +15,7 @@ __meta__ = {
 }
 
 [node name="ColorRect2" type="ColorRect" parent="."]
-margin_left = 32.0
-margin_right = 64.0
+margin_left = -32.0
 margin_bottom = 32.0
 color = Color( 0, 1, 1, 1 )
 __meta__ = {
@@ -24,8 +23,7 @@ __meta__ = {
 }
 
 [node name="ColorRect3" type="ColorRect" parent="."]
-margin_left = 64.0
-margin_right = 96.0
+margin_right = 32.0
 margin_bottom = 32.0
 color = Color( 0, 1, 1, 1 )
 __meta__ = {
@@ -33,8 +31,8 @@ __meta__ = {
 }
 
 [node name="ColorRect4" type="ColorRect" parent="."]
-margin_left = 96.0
-margin_right = 128.0
+margin_left = 32.0
+margin_right = 64.0
 margin_bottom = 32.0
 color = Color( 0, 1, 1, 1 )
 __meta__ = {
@@ -59,24 +57,24 @@ width = 2.0
 default_color = Color( 0, 0, 0, 1 )
 
 [node name="Line2D4" type="Line2D" parent="."]
-position = Vector2( 96, 0 )
+position = Vector2( -32, 0 )
 points = PoolVector2Array( 0, 0, 0, 32 )
 width = 2.0
 default_color = Color( 0, 0, 0, 1 )
 
 [node name="Line2D5" type="Line2D" parent="."]
-position = Vector2( 128, 0 )
+position = Vector2( -64, 0 )
 points = PoolVector2Array( 0, 0, 0, 32 )
 width = 1.0
 default_color = Color( 0, 0, 0, 1 )
 
 [node name="Line2D6" type="Line2D" parent="."]
-points = PoolVector2Array( 0, 0, 128, 0 )
+points = PoolVector2Array( -64, 0, 64, 0 )
 width = 1.0
 default_color = Color( 0, 0, 0, 1 )
 
 [node name="Line2D7" type="Line2D" parent="."]
 position = Vector2( 0, 32 )
-points = PoolVector2Array( 0, 0, 128, 0 )
+points = PoolVector2Array( -64, 0, 64, 0 )
 width = 1.0
 default_color = Color( 0, 0, 0, 1 )

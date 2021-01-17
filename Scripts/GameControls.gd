@@ -1,6 +1,6 @@
 extends Area2D
 
-signal rotate_block(degree)
+signal rotate_block()
 signal move_block(direction)
 
 export(float, 16, 128) var MIN_X_DRAG_DISTANCE = 32
@@ -16,7 +16,7 @@ func _on_Controls_input_event(_viewport, event, _shape_idx):
 			touch_hold = false
 		# Else user has touched screen
 		else:
-			emit_signal("rotate_block", 90)
+			emit_signal("rotate_block")
 	# Else user drags screen
 	elif event is InputEventScreenDrag:
 		# If user had not been dragging
