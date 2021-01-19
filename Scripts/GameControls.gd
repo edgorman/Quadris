@@ -40,7 +40,7 @@ func _on_Controls_input_event(_viewport, event, _shape_idx):
 				"move_block", 
 				Vector2(
 					0,
-					sign(start_pos.y - event.position.y)
+					-sign(start_pos.y - event.position.y)
 				)
 			)
 			start_pos.y = event.position.y

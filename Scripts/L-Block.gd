@@ -2,6 +2,8 @@ extends "res://Scripts/Block.gd"
 
 func _init():
 	type = "L-Block"
+	start = Vector2(3, -3)
+	offset = Vector2(2, 2)
 	grid = [
 		[	# 0
 			[0, 0, 0, 0],
