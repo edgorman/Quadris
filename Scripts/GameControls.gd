@@ -4,7 +4,7 @@ signal rotate_block()
 signal move_block(direction)
 
 export(float, 16, 128) var MIN_X_DRAG_DISTANCE = 32
-export(float, 16, 128) var MIN_Y_DRAG_DISTANCE = 64
+export(float, 16, 128) var MIN_Y_DRAG_DISTANCE = 128
 onready var touch_hold = false
 onready var start_pos = Vector2()
 

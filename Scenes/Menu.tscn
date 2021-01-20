@@ -4,7 +4,8 @@
 [ext_resource path="res://Objects/Menu/Title.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Objects/Menu/Label.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Objects/Menu/Button.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Scripts/Menu.gd" type="Script" id=5]
+[ext_resource path="res://Scripts/MenuScene.gd" type="Script" id=5]
+
 
 [sub_resource type="DynamicFont" id=1]
 font_data = ExtResource( 1 )

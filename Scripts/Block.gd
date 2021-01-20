@@ -13,6 +13,7 @@ func init(z, s, o):
 	size = z
 	scale_ = s
 	screen_offset = o
+	offset = Vector2(2, 2)
 	set_scale(Vector2(s, s))
 	set_coords(start)
 
@@ -31,8 +32,8 @@ func set_coords(value):
 		)
 	)
 
-func get_layout():
-	match int(get_node(".").rotation_degrees):
+func get_layout(rotation := get_node(".").rotation_degrees):
+	match int(rotation):
 		90:
 			return grid[1]
 		180:
@@ -42,9 +43,9 @@ func get_layout():
 		_:
 			return grid[0]
 
-func get_blocks():
+func get_blocks(rotation := get_node(".").rotation_degrees):
 	var blocks = []
-	var layout = get_layout()
+	var layout = get_layout(rotation)
 	
 	for y in range(4):
 		for x in range(4):
