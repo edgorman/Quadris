@@ -31,12 +31,12 @@ __meta__ = {
 [node name="GamePanel" type="Node2D" parent="UI/Container"]
 script = ExtResource( 4 )
 
-[node name="Controls" parent="UI/Container/GamePanel" instance=ExtResource( 3 )]
-
 [node name="Timer" type="Timer" parent="UI/Container/GamePanel"]
 autostart = true
 
 [node name="Blocks" type="Node2D" parent="UI/Container/GamePanel"]
+
+[node name="Controls" parent="UI/Container/GamePanel" instance=ExtResource( 3 )]
 
 [node name="MenuPanel" type="Node2D" parent="UI/Container"]
 
@@ -64,8 +64,8 @@ __meta__ = {
 margin_top = 494.0
 margin_bottom = 529.0
 text = "Menu"
+[connection signal="timeout" from="UI/Container/GamePanel/Timer" to="UI/Container/GamePanel" method="_on_Timer_timeout"]
 [connection signal="input_event" from="UI/Container/GamePanel/Controls" to="UI/Container/GamePanel/Controls" method="_on_Controls_input_event"]
 [connection signal="move_block" from="UI/Container/GamePanel/Controls" to="UI/Container/GamePanel" method="_on_Controls_move_block"]
 [connection signal="rotate_block" from="UI/Container/GamePanel/Controls" to="UI/Container/GamePanel" method="_on_Controls_rotate_block"]
-[connection signal="timeout" from="UI/Container/GamePanel/Timer" to="UI/Container/GamePanel" method="_on_Timer_timeout"]
 [connection signal="button_down" from="UI/Container/MenuPanel/MenuButtons/Menu" to="." method="_on_Menu_button_down"]

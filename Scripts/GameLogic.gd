@@ -133,14 +133,33 @@ func _on_Timer_timeout():
 		)
 	# Else block is placed
 	else:
+		# Remove completed rows
+		var rows_removed = 0
+		for idx in range(SCREEN_ROWS-1, -1, -1):
+			while is_row_complete(idx):
+				for block in blocks_parent.get_children():
+					# Check if block should be removed from scene
+					if block.get_coords()[1] >= SCREEN_ROWS:
+						blocks_parent.remove_child(block)
+					# Else move it down one block
+					elif block.get_coords()[1] <= idx:
+						block.set_coords(
+							Vector2(
+								block.get_coords()[0] + DOWN_DIRECTION[0], 
+								block.get_coords()[1] + DOWN_DIRECTION[1]
+							)
+						)
+		
+		# Update player score
+		score += rows_removed * 10
+		if rows_removed == 4:
+			score += 100
+		
+		# Add next block to scene
 		add_next_block()
 		
-		# Check if player still alive
-		if can_move_to():
-			score += 10
-			level = score % 100
-		# Else player game ended
-		else:
+		# Check if player has died
+		if not can_move_to():
 			print("[INFO]: Block cannot be placed, game has ended.")
 			alive = false
 			$Timer.stop()
@@ -224,9 +243,7 @@ func can_move_to(direction := Vector2(0, 0), rotation := int(curr_block.rotation
 	for n in range(len(new_blocks)):
 		var x = new_blocks[n][0]
 		var y = new_blocks[n][1]
-		# Check if above screen
-		# if y < 0:
-		# 	return false
+		
 		# Check if below screen
 		if y >= SCREEN_ROWS:
 			return false
@@ -256,3 +273,17 @@ func can_move_to(direction := Vector2(0, 0), rotation := int(curr_block.rotation
 				return false
 	
 	return true
+
+func is_row_complete(idx):
+	var cols = []
+	# For each block
+	for block in blocks_parent.get_children():
+		var coords = block.get_coords()
+		var blocks = block.get_blocks()
+		# Calculate coord of each inner block
+		for n in range(len(blocks)):
+			# If block is in final row
+			if blocks[n][1] + coords[1] == idx:
+				cols.append(blocks[n][0] + coords[0])
+	
+	return len(cols) == SCREEN_COLS

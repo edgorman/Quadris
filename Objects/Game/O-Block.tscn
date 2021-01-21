@@ -8,6 +8,7 @@ script = ExtResource( 1 )
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_right = 32.0
 margin_bottom = 32.0
+mouse_filter = 2
 color = Color( 0.831373, 0.839216, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -16,6 +17,7 @@ __meta__ = {
 [node name="ColorRect2" type="ColorRect" parent="."]
 margin_left = -32.0
 margin_bottom = 32.0
+mouse_filter = 2
 color = Color( 0.831373, 0.839216, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -25,6 +27,7 @@ __meta__ = {
 margin_left = -31.7194
 margin_top = -32.0
 margin_right = 0.280624
+mouse_filter = 2
 color = Color( 0.831373, 0.839216, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -33,6 +36,7 @@ __meta__ = {
 [node name="ColorRect4" type="ColorRect" parent="."]
 margin_top = -32.0
 margin_right = 32.0
+mouse_filter = 2
 color = Color( 0.831373, 0.839216, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -44,6 +48,7 @@ width = 2.0
 default_color = Color( 0, 0, 0, 1 )
 
 [node name="Line2D2" type="Line2D" parent="."]
+position = Vector2( -0.280609, 0 )
 points = PoolVector2Array( 32, -32, 32, 32 )
 width = 2.0
 default_color = Color( 0, 0, 0, 1 )
