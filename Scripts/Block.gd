@@ -4,35 +4,35 @@ var grid
 var type
 var size
 var scale_
-var screen_offset
-var start
-var offset
-var coords
+var pos_vec
+var start_vec
+var offset_block
+var offset_screen
 
 func init(z, s, o):
 	size = z
 	scale_ = s
-	screen_offset = o
-	offset = Vector2(2, 2)
+	offset_screen = o
+	offset_block = Vector2(2, 2)
 	set_scale(Vector2(s, s))
-	set_coords(start)
+	set_pos(start_vec)
 
 func get_type():
 	return type
 	
-func get_coords():
-	return coords
+func get_pos():
+	return pos_vec
 
-func set_coords(value):
-	coords = value
-	set_position(
-		Vector2(
-			((coords[0] + offset[0]) * size * scale_),
-			((coords[1] + offset[1]) * size * scale_) + screen_offset
-		)
-	)
+func get_x():
+	return pos_vec[0]
 
-func get_layout(rotation := get_node(".").rotation_degrees):
+func get_y():
+	return pos_vec[1]
+
+func get_rot():
+	return int(get_node(".").rotation_degrees)
+
+func get_blocks(rotation := get_rot()):
 	match int(rotation):
 		90:
 			return grid[1]
@@ -43,13 +43,14 @@ func get_layout(rotation := get_node(".").rotation_degrees):
 		_:
 			return grid[0]
 
-func get_blocks(rotation := get_node(".").rotation_degrees):
-	var blocks = []
-	var layout = get_layout(rotation)
-	
-	for y in range(4):
-		for x in range(4):
-			if layout[y][x] == 1:
-				blocks.append([x, y])
-	
-	return blocks
+func set_pos(v):
+	pos_vec = v
+	set_position(
+		Vector2(
+			((get_x() + offset_block[0]) * size * scale_),
+			((get_y() + offset_block[1]) * size * scale_) + offset_screen
+		)
+	)
+
+func set_rot(r):
+	set_rotation_degrees(r)

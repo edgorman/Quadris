@@ -8,6 +8,7 @@ onready var SCREEN_COLS = 10
 onready var BLOCK_SCALE = (SCREEN_SIZE_X / float(SCREEN_COLS)) / BLOCK_SIZE
 onready var SCREEN_ROWS = floor(SCREEN_SIZE_Y / (BLOCK_SIZE * BLOCK_SCALE))
 onready var BLOCK_OFFSET = fmod(SCREEN_SIZE_Y, BLOCK_SIZE * BLOCK_SCALE)
+var NO_DIRECTION = Vector2(0, 0)
 var UP_DIRECTION = Vector2(0, -1)
 var RIGHT_DIRECTION = Vector2(1, 0)
 var DOWN_DIRECTION = Vector2(0, 1)
@@ -81,8 +82,8 @@ func _ready():
 			# Update block params
 			var block = available_blocks[block_data["type"]].instance()
 			block.init(BLOCK_SIZE, BLOCK_SCALE, BLOCK_OFFSET)
-			block.set_coords(block_data["coords"])
-			block.set_rotation_degrees(block_data["rotation"])
+			block.set_pos(block_data["position"])
+			block.set_rot(block_data["rotation"])
 			
 			# Add block to scene
 			blocks_parent.add_child(block)
@@ -113,8 +114,8 @@ func _exit_tree():
 		game_state.store_line(to_json(
 			{
 				"type": block.get_type(),
-				"coords": block.get_coords(),
-				"rotation": block.get_rotation_degrees()
+				"pos": block.get_pos(),
+				"rot": block.get_rot()
 			}
 		))
 		
@@ -125,30 +126,18 @@ func _exit_tree():
 func _on_Timer_timeout():
 	# If block can still move down
 	if can_move_to(DOWN_DIRECTION):
-		curr_block.set_coords(
+		curr_block.set_pos(
 			Vector2(
-				curr_block.get_coords()[0] + DOWN_DIRECTION[0], 
-				curr_block.get_coords()[1] + DOWN_DIRECTION[1]
+				curr_block.get_x() + DOWN_DIRECTION[0], 
+				curr_block.get_y() + DOWN_DIRECTION[1]
 			)
 		)
-	# Else block is placed
+	# Else block hit bottom
 	else:
 		# Remove completed rows
 		var rows_removed = 0
-		for idx in range(SCREEN_ROWS-1, -1, -1):
-			while is_row_complete(idx):
-				for block in blocks_parent.get_children():
-					# Check if block should be removed from scene
-					if block.get_coords()[1] >= SCREEN_ROWS:
-						blocks_parent.remove_child(block)
-					# Else move it down one block
-					elif block.get_coords()[1] <= idx:
-						block.set_coords(
-							Vector2(
-								block.get_coords()[0] + DOWN_DIRECTION[0], 
-								block.get_coords()[1] + DOWN_DIRECTION[1]
-							)
-						)
+		
+		# TODO: remove rows
 		
 		# Update player score
 		score += rows_removed * 10
@@ -174,46 +163,46 @@ func _on_Controls_move_block(direction):
 	if direction == DOWN_DIRECTION:
 		# While current can move in direction
 		while can_move_to(direction):
-			var curr_coords = curr_block.get_coords()
-			curr_block.set_coords(
+			curr_block.set_pos(
 				Vector2(
-					curr_coords[0] + direction[0],
-					curr_coords[1] + direction[1]
+					curr_block.get_x() + DOWN_DIRECTION[0],
+					curr_block.get_y() + DOWN_DIRECTION[1]
 				)
 			)
+		# Place block
+		_on_Timer_timeout()
 	else:
 		# Check if current can move in direction
 		if can_move_to(direction):
-			var curr_coords = curr_block.get_coords()
-			curr_block.set_coords(
+			curr_block.set_pos(
 				Vector2(
-					curr_coords[0] + direction[0],
-					curr_coords[1] + direction[1]
+					curr_block.get_x() + direction[0],
+					curr_block.get_y() + direction[1]
 				)
 			)
 
 # Rotate block in the angle passed
 func _on_Controls_rotate_block():
-	match int(curr_block.get_rotation_degrees()):
+	match int(curr_block.get_rot()):
 		90:
-			if can_move_to(Vector2(0, 0), 180):
-				curr_block.set_rotation_degrees(180)
+			if can_move_to(NO_DIRECTION, 180):
+				curr_block.set_rot(180)
 		180:
-			if can_move_to(Vector2(0, 0), 270):
-				curr_block.set_rotation_degrees(270)
+			if can_move_to(NO_DIRECTION, 270):
+				curr_block.set_rot(270)
 		270:
-			if can_move_to(Vector2(0, 0), 360):
-				curr_block.set_rotation_degrees(360)
+			if can_move_to(NO_DIRECTION, 360):
+				curr_block.set_rot(360)
 		_:
-			if can_move_to(Vector2(0, 0), 90):
-				curr_block.set_rotation_degrees(90)
+			if can_move_to(NO_DIRECTION, 90):
+				curr_block.set_rot(90)
 
 # Return an instance of a random block
 func get_random_block():
-	var keys = available_blocks.keys()
 	random_generator.randomize()
-	var numb = random_generator.randi_range(0, len(keys)-1)
-	var next = available_blocks[keys[numb]].instance()
+	var keys = available_blocks.keys()
+	var rand = random_generator.randi_range(0, len(keys)-1)
+	var next = available_blocks[keys[rand]].instance()
 	next.init(BLOCK_SIZE, BLOCK_SCALE, BLOCK_OFFSET)
 	return next
 
@@ -227,63 +216,43 @@ func add_next_block():
 	next_block = get_random_block()
 
 # Return whether can move in direction
-func can_move_to(direction := Vector2(0, 0), rotation := int(curr_block.rotation_degrees)):
-	# Calculate new position of block
-	var curr_coords = curr_block.get_coords()
-	var curr_blocks = curr_block.get_blocks(rotation)
-	var new_blocks = []
+func can_move_to(direction := Vector2(0, 0), rotation := curr_block.get_rot()):
+	var curr_inner = curr_block.get_blocks(rotation)
+	var moved_blocks = []
 	
-	for n in range(len(curr_blocks)):
-		new_blocks.append([
-			curr_blocks[n][0] + direction[0] + curr_coords[0],
-			curr_blocks[n][1] + direction[1] + curr_coords[1]
+	# Calculate moved pos of inner blocks
+	for inner in curr_inner:
+		moved_blocks.append([
+			curr_block.get_x() + inner[0] + direction[0],
+			curr_block.get_y() + inner[1] + direction[1]
 		])
 	
-	# Check if out of bounds
-	for n in range(len(new_blocks)):
-		var x = new_blocks[n][0]
-		var y = new_blocks[n][1]
-		
-		# Check if below screen
-		if y >= SCREEN_ROWS:
+	# Check if moved blocks out of bounds
+	for block in moved_blocks:
+		if block[1] >= SCREEN_ROWS:
 			return false
-		# Check if before screen
-		if x < 0:
+		if block[0] < 0:
 			return false
-		# check if after screen
-		if x >= SCREEN_COLS:
+		if block[0] >= SCREEN_COLS:
 			return false
 	
 	# Check if overlaps with other blocks
-	for other_block in blocks_parent.get_children():
+	for block in blocks_parent.get_children():
 		# Ignore current block
-		if other_block == curr_block:
+		if block == curr_block:
 			continue
 		
-		var other_coords = other_block.get_coords()
-		var other_blocks = other_block.get_blocks()
+		var block_inner = block.get_blocks()
 		
 		# For each block in block
-		for block in other_blocks:
-			var x = block[0] + other_coords[0]
-			var y = block[1] + other_coords[1]
+		for inner in block_inner:
+			var x = inner[0] + block.get_x()
+			var y = inner[1] + block.get_y()
 			
 			# Check if block in new blocks
-			if [x, y] in new_blocks:
+			if [x, y] in moved_blocks:
 				return false
 	
+	# Can move to that position and rotation
 	return true
 
-func is_row_complete(idx):
-	var cols = []
-	# For each block
-	for block in blocks_parent.get_children():
-		var coords = block.get_coords()
-		var blocks = block.get_blocks()
-		# Calculate coord of each inner block
-		for n in range(len(blocks)):
-			# If block is in final row
-			if blocks[n][1] + coords[1] == idx:
-				cols.append(blocks[n][0] + coords[0])
-	
-	return len(cols) == SCREEN_COLS
