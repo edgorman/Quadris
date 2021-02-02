@@ -23,11 +23,15 @@ config/icon="res://icon.png"
 
 window/size/width=576
 window/size/height=1024
-window/size/test_width=288
-window/size/test_height=512
+window/size/test_width=542
+window/size/test_height=960
 window/handheld/orientation="portrait"
 window/stretch/mode="2d"
 window/stretch/aspect="keep_width"
+
+[gdnative]
+
+singletons=[  ]
 
 [input_devices]
 
