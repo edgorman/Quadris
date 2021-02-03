@@ -1,21 +1,24 @@
 extends Node2D
 
-var grid
+var grid = [[[1, 1]], [[2, 1]], [[2, 2]], [[1, 2]]]
 var type
 var size
 var scale_
+var color
 var pos_vec
-var start_vec
+var start_vec = Vector2(0, 0)
 var offset_block
 var offset_screen
 
-func init(z, s, o):
+func init(z, s, o, c := $ColorRect.get_frame_color()):
 	size = z
 	scale_ = s
+	color = c
+	$ColorRect.set_frame_color(color)
 	offset_screen = o
 	offset_block = Vector2(2, 2)
 	set_scale(Vector2(s, s))
-	set_pos(start_vec)
+	set_pos(Vector2(get_start_x(), 0))
 
 func get_type():
 	return type
@@ -28,6 +31,15 @@ func get_x():
 
 func get_y():
 	return pos_vec[1]
+
+func get_start_x():
+	return start_vec[0]
+
+func get_start_y():
+	return start_vec[1]
+
+func get_color():
+	return color
 
 func get_rot():
 	return int(get_node(".").rotation_degrees)
@@ -48,7 +60,7 @@ func set_pos(v):
 	set_position(
 		Vector2(
 			((get_x() + offset_block[0]) * size * scale_),
-			((get_y() + offset_block[1]) * size * scale_) + offset_screen
+			((get_y() + offset_block[1] + get_start_y()) * size * scale_) + offset_screen
 		)
 	)
 

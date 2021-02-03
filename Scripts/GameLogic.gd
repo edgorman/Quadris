@@ -1,5 +1,9 @@
 extends Node2D
 
+# Debug variables
+onready var CLEAN_LOAD = true
+onready var ALLOW_UP_DIRECTION = false
+
 # Constant variables
 onready var SCREEN_SIZE_X = float(448)
 onready var SCREEN_SIZE_Y = float(1024)
@@ -17,6 +21,7 @@ var LEFT_DIRECTION = Vector2(-1, 0)
 # Scene variables
 onready var random_generator = RandomNumberGenerator.new()
 onready var blocks_parent = $Blocks
+onready var single_block = load("res://Objects/Game/Block.tscn")
 onready var available_blocks = {
 	"I-Block": load("res://Objects/Game/I-Block.tscn"),
 	"L-Block": load("res://Objects/Game/L-Block.tscn"),
@@ -35,16 +40,13 @@ var speed
 var curr_block
 var next_block
 
-# Debug variables
-onready var clean_load = true
-
 # Function executed when scene enters tree
 func _ready():
 	# Store game state in file type
 	var game_state = File.new()
 	
 	# If game state does not exist
-	if not game_state.file_exists("user://gamestate.save") or clean_load:
+	if not game_state.file_exists("user://gamestate.save") or CLEAN_LOAD:
 		# Create new game
 		print("[INFO]: Game state not found, generating new game.")
 		
@@ -136,8 +138,23 @@ func _on_Timer_timeout():
 	else:
 		# Remove completed rows
 		var rows_removed = 0
-		
-		# TODO: remove rows
+		for idx in range(SCREEN_ROWS, -1, -1):
+			# Check if row at idx is complete:
+			while is_row_complete(idx):
+				rows_removed += 1
+				
+				for block in blocks_parent.get_children():
+					# Check if block should be removed
+					if block.get_y() == idx:
+						blocks_parent.remove_child(block)
+					# Check if block is above row
+					elif block.get_y() < idx:
+						block.set_pos(
+							Vector2(
+								block.get_x() + DOWN_DIRECTION[0], 
+								block.get_y() + DOWN_DIRECTION[1]
+							)
+						)
 		
 		# Update player score
 		score += rows_removed * 10
@@ -156,7 +173,7 @@ func _on_Timer_timeout():
 # Move block in the direction passed
 func _on_Controls_move_block(direction):
 	# Ignore upwards movement
-	if direction == UP_DIRECTION:
+	if not ALLOW_UP_DIRECTION and direction == UP_DIRECTION:
 		return
 	
 	# Drop down for downward movement
@@ -208,6 +225,25 @@ func get_random_block():
 
 # Add a new block to the scene
 func add_next_block():
+	# If current block exists
+	if not curr_block == null:
+		var curr_inner = curr_block.get_blocks()
+		
+		# Place inner blocks in scene
+		for inner in curr_inner:
+			var block = single_block.instance()
+			block.init(BLOCK_SIZE, BLOCK_SCALE, BLOCK_OFFSET, curr_block.get_color())
+			block.set_pos(
+				Vector2(
+					curr_block.get_x() + inner[0] - 1, 
+					curr_block.get_y() + inner[1] + curr_block.get_start_y() - 1
+				)
+			)
+			blocks_parent.add_child(block)
+		
+		# Remove block from scene
+		blocks_parent.remove_child(curr_block)
+
 	# Add block to scene
 	curr_block = next_block
 	blocks_parent.add_child(curr_block)
@@ -224,7 +260,7 @@ func can_move_to(direction := Vector2(0, 0), rotation := curr_block.get_rot()):
 	for inner in curr_inner:
 		moved_blocks.append([
 			curr_block.get_x() + inner[0] + direction[0],
-			curr_block.get_y() + inner[1] + direction[1]
+			curr_block.get_y() + inner[1] + direction[1] - 2
 		])
 	
 	# Check if moved blocks out of bounds
@@ -256,3 +292,22 @@ func can_move_to(direction := Vector2(0, 0), rotation := curr_block.get_rot()):
 	# Can move to that position and rotation
 	return true
 
+func is_row_complete(idx):
+	var cols = []
+	
+	# For each block
+	for block in blocks_parent.get_children():
+		var block_inner = block.get_blocks()
+		
+		# Check if inner block is at row index
+		for inner in block_inner:
+			if block.get_y() + inner[1] - 1 == idx:
+				cols.append(block.get_x() + inner[0] - 1)
+	
+	# Return true if row complete
+	if len(cols) == SCREEN_COLS:
+		print(cols)
+		print("---")
+		print(idx)
+		print("---")
+	return len(cols) == SCREEN_COLS
