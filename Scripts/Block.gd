@@ -18,7 +18,7 @@ func init(z, s, o, c := $ColorRect.get_frame_color()):
 	offset_screen = o
 	offset_block = Vector2(2, 2)
 	set_scale(Vector2(s, s))
-	set_pos(Vector2(get_start_x(), 0))
+	set_pos(start_vec)
 
 func get_type():
 	return type
@@ -45,22 +45,30 @@ func get_rot():
 	return int(get_node(".").rotation_degrees)
 
 func get_blocks(rotation := get_rot()):
+	var blocks = []
 	match int(rotation):
 		90:
-			return grid[1]
+			blocks = [] + grid[1]
 		180:
-			return grid[2]
+			blocks = [] + grid[2]
 		270:
-			return grid[3]
+			blocks = [] + grid[3]
 		_:
-			return grid[0]
+			blocks = [] + grid[0]
+	
+	for n in range(len(blocks)):
+		blocks[n] = [
+			blocks[n][0] + get_x(),
+			blocks[n][1] + get_y()
+		]
+	return blocks
 
 func set_pos(v):
 	pos_vec = v
 	set_position(
 		Vector2(
 			((get_x() + offset_block[0]) * size * scale_),
-			((get_y() + offset_block[1] + get_start_y()) * size * scale_) + offset_screen
+			((get_y() + offset_block[1]) * size * scale_) + offset_screen
 		)
 	)
 

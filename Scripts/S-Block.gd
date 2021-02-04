@@ -2,7 +2,7 @@ extends "res://Scripts/Block.gd"
 
 func _init():
 	type = "S-Block"
-	start_vec = Vector2(3, -2)
+	start_vec = Vector2(3, -1)
 	grid = [
 		[	# 0
 			[2, 1],
