@@ -10,7 +10,7 @@ onready var SCREEN_SIZE_Y = float(1024)
 onready var BLOCK_SIZE = float(32)
 onready var SCREEN_COLS = float(10)
 onready var BLOCK_SCALE = (SCREEN_SIZE_X / SCREEN_COLS) / BLOCK_SIZE
-onready var SCREEN_ROWS = ceil(SCREEN_SIZE_Y / (BLOCK_SIZE * BLOCK_SCALE))
+onready var SCREEN_ROWS = floor(SCREEN_SIZE_Y / (BLOCK_SIZE * BLOCK_SCALE))
 onready var BLOCK_OFFSET = fmod(SCREEN_SIZE_Y, BLOCK_SIZE * BLOCK_SCALE)
 var NO_DIRECTION = Vector2(0, 0)
 var UP_DIRECTION = Vector2(0, -1)
@@ -42,9 +42,6 @@ var next_block
 
 # Function executed when scene enters tree
 func _ready():
-	print(BLOCK_SCALE)
-	print(SCREEN_ROWS)
-	print(BLOCK_OFFSET)
 	# Store game state in file type
 	var game_state = File.new()
 	
@@ -129,8 +126,6 @@ func _exit_tree():
 
 # Move block down by a single unit
 func _on_Timer_timeout():
-	print(SCREEN_ROWS)
-	print(curr_block.get_blocks())
 	# If block can still move down
 	if can_move_to(DOWN_DIRECTION):
 		curr_block.set_pos(
@@ -143,23 +138,23 @@ func _on_Timer_timeout():
 	else:
 		# Remove completed rows
 		var rows_removed = 0
-#		for idx in range(SCREEN_ROWS, -1, -1):
-#			# Check if row at idx is complete:
-#			while is_row_complete(idx):
-#				rows_removed += 1
-#
-#				for block in blocks_parent.get_children():
-#					# Check if block should be removed
-#					if block.get_y() == idx:
-#						blocks_parent.remove_child(block)
-#					# Check if block is above row
-#					elif block.get_y() < idx:
-#						block.set_pos(
-#							Vector2(
-#								block.get_x() + DOWN_DIRECTION[0], 
-#								block.get_y() + DOWN_DIRECTION[1]
-#							)
-#						)
+		for idx in range(SCREEN_ROWS - 1, -1, -1):
+			# Check if row at idx is complete:
+			while is_row_complete(idx):
+				rows_removed += 1
+
+				for block in blocks_parent.get_children():
+					# Check if block should be removed
+					if block.get_y() == idx:
+						blocks_parent.remove_child(block)
+					# Check if block is above row
+					elif block.get_y() < idx:
+						block.set_pos(
+							Vector2(
+								block.get_x() + DOWN_DIRECTION[0], 
+								block.get_y() + DOWN_DIRECTION[1]
+							)
+						)
 		
 		# Update player score
 		score += rows_removed * 10
@@ -177,7 +172,6 @@ func _on_Timer_timeout():
 
 # Move block in the direction passed
 func _on_Controls_move_block(direction):
-	print(curr_block.get_blocks())
 	# Ignore upwards movement
 	if not ALLOW_UP_DIRECTION and direction == UP_DIRECTION:
 		return
@@ -239,8 +233,8 @@ func add_next_block():
 			block.init(BLOCK_SIZE, BLOCK_SCALE, BLOCK_OFFSET, curr_block.get_color())
 			block.set_pos(
 				Vector2(
-					inner[0], 
-					inner[1]
+					inner[0] - 1, 
+					inner[1] - 1
 				)
 			)
 			blocks_parent.add_child(block)
@@ -299,4 +293,6 @@ func is_row_complete(idx):
 				cols.append(inner[0])
 	
 	# Return true if row complete
+	print(idx)
+	print(cols)
 	return len(cols) == SCREEN_COLS
