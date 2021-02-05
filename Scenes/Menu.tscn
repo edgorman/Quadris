@@ -77,5 +77,6 @@ margin_top = 65.0
 margin_right = 576.0
 margin_bottom = 100.0
 text = "Settings"
-[connection signal="button_up" from="UI/MenuButtons/StartGame" to="." method="_on_StartGame_button_up"]
+[connection signal="gui_input" from="Background/Color" to="." method="_on_MenuButtons_gui_input"]
+[connection signal="button_down" from="UI/MenuButtons/StartGame" to="." method="_on_StartGame_button_down"]
 [connection signal="button_down" from="UI/MenuButtons/Settings" to="." method="_on_Settings_button_down"]

@@ -6,9 +6,6 @@
 [ext_resource path="res://Objects/Settings/Checkbox.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Scripts/SettingsScene.gd" type="Script" id=5]
 
-
-
-
 [node name="Settings" type="Node2D"]
 script = ExtResource( 5 )
 
@@ -84,4 +81,5 @@ margin_bottom = 167.0
 [node name="CheckboxInput" parent="UI/Container/SettingsPanel/ScrollArea/Container" instance=ExtResource( 4 )]
 margin_top = 197.0
 margin_bottom = 277.0
+[connection signal="gui_input" from="UI/Container/MenuPanel/MenuButtons" to="." method="_on_MenuButtons_gui_input"]
 [connection signal="button_down" from="UI/Container/MenuPanel/MenuButtons/Menu" to="." method="_on_Menu_button_down"]

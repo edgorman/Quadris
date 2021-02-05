@@ -1,0 +1,6 @@
+[gd_scene format=2]
+
+[node name="HeightGap" type="Control"]
+margin_top = 447.0
+margin_right = 128.0
+margin_bottom = 447.0

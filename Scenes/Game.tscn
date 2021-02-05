@@ -1,9 +1,12 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Objects/Menu/Button.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/GameScene.gd" type="Script" id=2]
 [ext_resource path="res://Scenes/Controls.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Scripts/GameLogic.gd" type="Script" id=4]
+[ext_resource path="res://Objects/Menu/Label.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Objects/Menu/SubLabel.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Objects/Menu/HeightGap.tscn" type="PackedScene" id=7]
 
 [node name="Game" type="Node2D"]
 script = ExtResource( 2 )
@@ -55,17 +58,76 @@ __meta__ = {
 margin_left = 448.0
 margin_right = 576.0
 margin_bottom = 1024.0
+custom_constants/separation = 30
 alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Level" parent="UI/Container/MenuPanel/MenuButtons" instance=ExtResource( 5 )]
+margin_top = 224.0
+margin_right = 128.0
+margin_bottom = 253.0
+text = "Level"
+
+[node name="LevelValue" parent="UI/Container/MenuPanel/MenuButtons" instance=ExtResource( 6 )]
+margin_top = 283.0
+margin_right = 128.0
+margin_bottom = 312.0
+
+[node name="HeightGap" parent="UI/Container/MenuPanel/MenuButtons" instance=ExtResource( 7 )]
+margin_top = 342.0
+margin_bottom = 342.0
+
+[node name="HeightGap2" parent="UI/Container/MenuPanel/MenuButtons" instance=ExtResource( 7 )]
+margin_top = 372.0
+margin_bottom = 372.0
+
+[node name="Score" parent="UI/Container/MenuPanel/MenuButtons" instance=ExtResource( 5 )]
+margin_top = 402.0
+margin_right = 128.0
+margin_bottom = 431.0
+text = "Score"
+
+[node name="ScoreValue" parent="UI/Container/MenuPanel/MenuButtons" instance=ExtResource( 6 )]
+margin_top = 461.0
+margin_right = 128.0
+margin_bottom = 490.0
+
+[node name="HeightGap3" parent="UI/Container/MenuPanel/MenuButtons" instance=ExtResource( 7 )]
+margin_top = 520.0
+margin_bottom = 520.0
+
+[node name="HeightGap4" parent="UI/Container/MenuPanel/MenuButtons" instance=ExtResource( 7 )]
+margin_top = 550.0
+margin_bottom = 550.0
+
+[node name="Next" parent="UI/Container/MenuPanel/MenuButtons" instance=ExtResource( 5 )]
+margin_top = 580.0
+margin_right = 128.0
+margin_bottom = 609.0
+text = "Next"
+
+[node name="HeightGap5" parent="UI/Container/MenuPanel/MenuButtons" instance=ExtResource( 7 )]
+margin_top = 639.0
+margin_bottom = 639.0
+
+[node name="HeightGap6" parent="UI/Container/MenuPanel/MenuButtons" instance=ExtResource( 7 )]
+margin_top = 669.0
+margin_bottom = 669.0
+
 [node name="Menu" parent="UI/Container/MenuPanel/MenuButtons" instance=ExtResource( 1 )]
-margin_top = 494.0
-margin_bottom = 529.0
+margin_top = 699.0
+margin_bottom = 734.0
 text = "Menu"
+
+[node name="Reset" parent="UI/Container/MenuPanel/MenuButtons" instance=ExtResource( 1 )]
+margin_top = 764.0
+margin_bottom = 799.0
+text = "Reset"
 [connection signal="timeout" from="UI/Container/GamePanel/Timer" to="UI/Container/GamePanel" method="_on_Timer_timeout"]
 [connection signal="input_event" from="UI/Container/GamePanel/Controls" to="UI/Container/GamePanel/Controls" method="_on_Controls_input_event"]
 [connection signal="move_block" from="UI/Container/GamePanel/Controls" to="UI/Container/GamePanel" method="_on_Controls_move_block"]
 [connection signal="rotate_block" from="UI/Container/GamePanel/Controls" to="UI/Container/GamePanel" method="_on_Controls_rotate_block"]
+[connection signal="gui_input" from="UI/Container/MenuPanel/MenuButtons" to="." method="_on_MenuButtons_gui_input"]
 [connection signal="button_down" from="UI/Container/MenuPanel/MenuButtons/Menu" to="." method="_on_Menu_button_down"]
