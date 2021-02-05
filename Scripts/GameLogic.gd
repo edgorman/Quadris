@@ -293,6 +293,4 @@ func is_row_complete(idx):
 				cols.append(inner[0])
 	
 	# Return true if row complete
-	print(idx)
-	print(cols)
 	return len(cols) == SCREEN_COLS
