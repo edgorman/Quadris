@@ -20,7 +20,6 @@ var LEFT_DIRECTION = Vector2(-1, 0)
 
 # Scene variables
 onready var random_generator = RandomNumberGenerator.new()
-onready var blocks_parent = $Blocks
 onready var single_block = load("res://Objects/Game/Block.tscn")
 onready var available_blocks = {
 	"I-Block": load("res://Objects/Game/I-Block.tscn"),
@@ -88,7 +87,7 @@ func _ready():
 			block.set_rot(block_data["rotation"])
 			
 			# Add block to scene
-			blocks_parent.add_child(block)
+			add_child(block)
 	
 	# Close game state file
 	game_state.close()
@@ -112,7 +111,7 @@ func _exit_tree():
 	))
 	
 	# Save each block in block parent
-	for block in blocks_parent.get_children():
+	for block in get_children():
 		game_state.store_line(to_json(
 			{
 				"type": block.get_type(),
@@ -143,10 +142,10 @@ func _on_Timer_timeout():
 			while is_row_complete(idx):
 				rows_removed += 1
 
-				for block in blocks_parent.get_children():
+				for block in get_children():
 					# Check if block should be removed
 					if block.get_y() == idx:
-						blocks_parent.remove_child(block)
+						remove_child(block)
 					# Check if block is above row
 					elif block.get_y() < idx:
 						block.set_pos(
@@ -168,7 +167,7 @@ func _on_Timer_timeout():
 		if not can_move_to():
 			print("[INFO]: Block cannot be placed, game has ended.")
 			alive = false
-			$Timer.stop()
+#			get_parent().get_node("Timer").stop()
 
 # Move block in the direction passed
 func _on_Controls_move_block(direction):
@@ -237,14 +236,14 @@ func add_next_block():
 					inner[1] - 1
 				)
 			)
-			blocks_parent.add_child(block)
+			add_child(block)
 		
 		# Remove block from scene
-		blocks_parent.remove_child(curr_block)
+		remove_child(curr_block)
 
 	# Add block to scene
 	curr_block = next_block
-	blocks_parent.add_child(curr_block)
+	add_child(curr_block)
 	
 	# Generate next block
 	next_block = get_random_block()
@@ -269,7 +268,7 @@ func can_move_to(direction := Vector2(0, 0), rotation := curr_block.get_rot()):
 			return false
 	
 	# Check if overlaps with other blocks
-	for block in blocks_parent.get_children():
+	for block in get_children():
 		# Ignore current block
 		if block == curr_block:
 			continue
@@ -286,7 +285,7 @@ func is_row_complete(idx):
 	var cols = []
 	
 	# For each block
-	for block in blocks_parent.get_children():
+	for block in get_children():
 		# Check if inner block is at row index
 		for inner in block.get_blocks():
 			if inner[1] == idx:

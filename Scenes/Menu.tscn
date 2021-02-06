@@ -12,9 +12,7 @@ font_data = ExtResource( 1 )
 [node name="Menu" type="Node2D"]
 script = ExtResource( 5 )
 
-[node name="Background" type="Node2D" parent="."]
-
-[node name="Color" type="ColorRect" parent="Background"]
+[node name="Background" type="ColorRect" parent="."]
 margin_left = -1.8877
 margin_top = -1.49829
 margin_right = 574.112
@@ -24,12 +22,17 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="UI" type="Node2D" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="Background"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/separation = 265
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Version" type="Label" parent="UI"]
-margin_top = 6.0
-margin_right = 570.0
-margin_bottom = 14.0
+[node name="Version" type="Label" parent="Background/VBoxContainer"]
+margin_right = 575.0
+margin_bottom = 19.0
 custom_fonts/font = SubResource( 1 )
 text = "version alpha"
 align = 2
@@ -37,46 +40,50 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Title" parent="UI" instance=ExtResource( 2 )]
-margin_top = 320.0
-margin_bottom = 396.0
-text = "Quadris"
-
-[node name="WelcomeText" type="VBoxContainer" parent="UI"]
-margin_top = 420.0
-margin_right = 576.0
-margin_bottom = 472.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Welcome" parent="UI/WelcomeText" instance=ExtResource( 3 )]
-text = "Welcome, user"
-
-[node name="Highscore" parent="UI/WelcomeText" instance=ExtResource( 3 )]
-margin_top = 33.0
-margin_bottom = 62.0
-text = "Your highscore is: 9000"
-
-[node name="MenuButtons" type="VBoxContainer" parent="UI"]
-margin_top = 640.0
-margin_right = 576.0
-margin_bottom = 714.0
+[node name="WelcomeText" type="VBoxContainer" parent="Background/VBoxContainer"]
+margin_top = 284.0
+margin_right = 575.0
+margin_bottom = 478.0
 custom_constants/separation = 30
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="StartGame" parent="UI/MenuButtons" instance=ExtResource( 4 )]
-margin_right = 576.0
+[node name="Title" parent="Background/VBoxContainer/WelcomeText" instance=ExtResource( 2 )]
+margin_right = 575.0
+text = "Quadris"
+
+[node name="Welcome" parent="Background/VBoxContainer/WelcomeText" instance=ExtResource( 3 )]
+margin_top = 106.0
+margin_right = 575.0
+margin_bottom = 135.0
+text = "Welcome, user"
+
+[node name="Highscore" parent="Background/VBoxContainer/WelcomeText" instance=ExtResource( 3 )]
+margin_top = 165.0
+margin_right = 575.0
+margin_bottom = 194.0
+text = "Your highscore is: 9000"
+
+[node name="MenuButtons" type="VBoxContainer" parent="Background/VBoxContainer"]
+margin_top = 743.0
+margin_right = 575.0
+margin_bottom = 843.0
+custom_constants/separation = 30
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Game" parent="Background/VBoxContainer/MenuButtons" instance=ExtResource( 4 )]
+margin_right = 575.0
 margin_bottom = 35.0
 text = "Start Game"
 
-[node name="Settings" parent="UI/MenuButtons" instance=ExtResource( 4 )]
+[node name="Settings" parent="Background/VBoxContainer/MenuButtons" instance=ExtResource( 4 )]
 margin_top = 65.0
-margin_right = 576.0
+margin_right = 575.0
 margin_bottom = 100.0
 text = "Settings"
-[connection signal="gui_input" from="Background/Color" to="." method="_on_MenuButtons_gui_input"]
-[connection signal="button_down" from="UI/MenuButtons/StartGame" to="." method="_on_StartGame_button_down"]
-[connection signal="button_down" from="UI/MenuButtons/Settings" to="." method="_on_Settings_button_down"]
+[connection signal="gui_input" from="Background" to="." method="_on_MenuButtons_gui_input"]
+[connection signal="button_down" from="Background/VBoxContainer/MenuButtons/Game" to="." method="_on_StartGame_button_down"]
+[connection signal="button_down" from="Background/VBoxContainer/MenuButtons/Settings" to="." method="_on_Settings_button_down"]
