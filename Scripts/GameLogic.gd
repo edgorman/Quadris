@@ -1,5 +1,9 @@
 extends Node2D
 
+signal update_score(value)
+signal update_level(value)
+signal update_block(value)
+
 # Debug variables
 onready var CLEAN_LOAD = true
 onready var ALLOW_UP_DIRECTION = false
@@ -89,6 +93,11 @@ func _ready():
 			# Add block to scene
 			add_child(block)
 	
+	# Update score and label
+	emit_signal("update_score", score)
+	emit_signal("update_level", level)
+	emit_signal("update_block", "res://Objects/Game/" + next_block.get_type() + ".tscn")
+	
 	# Close game state file
 	game_state.close()
 
@@ -158,16 +167,21 @@ func _on_Timer_timeout():
 		# Update player score
 		score += rows_removed * 10
 		if rows_removed == 4:
-			score += 100
+			score += 60
 		
 		# Add next block to scene
 		add_next_block()
+		
+		# Update score, label and next block
+		emit_signal("update_score", score)
+		emit_signal("update_level", level)
+		emit_signal("update_block", "res://Objects/Game/" + next_block.get_type() + ".tscn")
 		
 		# Check if player has died
 		if not can_move_to():
 			print("[INFO]: Block cannot be placed, game has ended.")
 			alive = false
-#			get_parent().get_node("Timer").stop()
+			get_parent().get_node("Timer").stop()
 
 # Move block in the direction passed
 func _on_Controls_move_block(direction):

@@ -39,7 +39,6 @@ __meta__ = {
 
 [node name="Menu" parent="Color/MenuButtons" instance=ExtResource( 1 )]
 margin_top = 494.0
-margin_right = 127.0
 margin_bottom = 529.0
 text = "Menu"
 

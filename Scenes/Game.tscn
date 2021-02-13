@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Objects/Menu/Button.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/GameScene.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Scripts/GameLogic.gd" type="Script" id=4]
 [ext_resource path="res://Objects/Menu/Label.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Objects/Menu/SubLabel.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Objects/Menu/HeightGap.tscn" type="PackedScene" id=7]
 
 [node name="Game" type="Node2D"]
 script = ExtResource( 2 )
@@ -42,9 +43,9 @@ __meta__ = {
 }
 
 [node name="Level" type="VBoxContainer" parent="Menu/Container"]
-margin_top = 164.0
+margin_top = 148.0
 margin_right = 128.0
-margin_bottom = 254.0
+margin_bottom = 238.0
 custom_constants/separation = 32
 
 [node name="Text" parent="Menu/Container/Level" instance=ExtResource( 5 )]
@@ -55,11 +56,12 @@ text = "Level"
 margin_top = 61.0
 margin_right = 128.0
 margin_bottom = 90.0
+text = "1"
 
 [node name="Score" type="VBoxContainer" parent="Menu/Container"]
-margin_top = 382.0
+margin_top = 366.0
 margin_right = 128.0
-margin_bottom = 472.0
+margin_bottom = 456.0
 custom_constants/separation = 32
 
 [node name="Text" parent="Menu/Container/Score" instance=ExtResource( 5 )]
@@ -70,21 +72,26 @@ text = "Score"
 margin_top = 61.0
 margin_right = 128.0
 margin_bottom = 90.0
+text = "0"
 
 [node name="Next" type="VBoxContainer" parent="Menu/Container"]
-margin_top = 600.0
+margin_top = 584.0
 margin_right = 128.0
-margin_bottom = 629.0
+margin_bottom = 645.0
 custom_constants/separation = 32
 
 [node name="Text" parent="Menu/Container/Next" instance=ExtResource( 5 )]
 margin_right = 128.0
 text = "Next"
 
+[node name="HeightGap" parent="Menu/Container/Next" instance=ExtResource( 7 )]
+margin_top = 61.0
+margin_bottom = 61.0
+
 [node name="Menu" type="VBoxContainer" parent="Menu/Container"]
-margin_top = 757.0
+margin_top = 773.0
 margin_right = 128.0
-margin_bottom = 859.0
+margin_bottom = 875.0
 custom_constants/separation = 32
 
 [node name="Menu" parent="Menu/Container/Menu" instance=ExtResource( 1 )]
@@ -103,6 +110,9 @@ script = ExtResource( 4 )
 [connection signal="timeout" from="Timer" to="Blocks" method="_on_Timer_timeout"]
 [connection signal="gui_input" from="Menu/Container" to="." method="_on_MenuButtons_gui_input"]
 [connection signal="button_down" from="Menu/Container/Menu/Menu" to="." method="_on_Menu_button_down"]
+[connection signal="update_block" from="Blocks" to="." method="_on_update_block"]
+[connection signal="update_level" from="Blocks" to="." method="_on_update_level"]
+[connection signal="update_score" from="Blocks" to="." method="_on_update_score"]
 [connection signal="input_event" from="Controls" to="Controls" method="_on_Controls_input_event"]
 [connection signal="move_block" from="Controls" to="Blocks" method="_on_Controls_move_block"]
 [connection signal="rotate_block" from="Controls" to="Blocks" method="_on_Controls_rotate_block"]

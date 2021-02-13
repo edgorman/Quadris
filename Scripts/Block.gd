@@ -1,7 +1,7 @@
 extends Node2D
 
 var grid = [[[1, 1]], [[2, 1]], [[2, 2]], [[1, 2]]]
-var type
+var type = "Block"
 var size
 var scale_
 var color
