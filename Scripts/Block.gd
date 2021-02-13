@@ -10,10 +10,10 @@ var start_vec = Vector2(0, 0)
 var offset_block
 var offset_screen
 
-func init(z, s, o, c := $ColorRect.get_frame_color()):
+func init(z, s, o, c := $ColorRect.get_frame_color().to_html(false)):
 	size = z
 	scale_ = s
-	color = c
+	color = str(c).replace('#', '')
 	$ColorRect.set_frame_color(color)
 	offset_screen = o
 	offset_block = Vector2(2, 2)
@@ -39,7 +39,7 @@ func get_start_y():
 	return start_vec[1]
 
 func get_color():
-	return color
+	return str(color)
 
 func get_rot():
 	return int(get_node(".").rotation_degrees)

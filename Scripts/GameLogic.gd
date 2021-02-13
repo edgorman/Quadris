@@ -5,7 +5,7 @@ signal update_level(value)
 signal update_block(value)
 
 # Debug variables
-onready var CLEAN_LOAD = true
+onready var CLEAN_LOAD = false
 onready var ALLOW_UP_DIRECTION = false
 
 # Constant variables
@@ -72,23 +72,42 @@ func _ready():
 		
 		# Update global variable information
 		var game_data = parse_json(game_state.get_line())
-		alive = game_data["alive"]
-		score = game_data["score"]
-		level = game_data["level"]
-		speed = game_data["speed"]
-		curr_block = game_data["curr_block"]
-		next_block = game_data["next_block"]
+		alive = bool(game_data["alive"])
+		score = int(game_data["score"])
+		level = int(game_data["level"])
+		speed = int(game_data["speed"])
+		next_block = available_blocks[game_data["next"]].instance()
+		next_block.init(BLOCK_SIZE, BLOCK_SCALE, BLOCK_OFFSET)
 		
 		# Update placed blocks with remaining information
 		while game_state.get_position() < game_state.get_len():
-			# Parse next line
+			var block
 			var block_data = parse_json(game_state.get_line())
 			
 			# Update block params
-			var block = available_blocks[block_data["type"]].instance()
-			block.init(BLOCK_SIZE, BLOCK_SCALE, BLOCK_OFFSET)
-			block.set_pos(block_data["position"])
-			block.set_rot(block_data["rotation"])
+			if block_data["type"] == "Block":
+				block = single_block.instance()
+			else:
+				block = available_blocks[block_data["type"]].instance()
+			
+			block.init(
+				BLOCK_SIZE, 
+				BLOCK_SCALE, 
+				BLOCK_OFFSET,
+				"#"+block_data["c"]
+			)
+			block.set_pos(
+				Vector2(
+					int(block_data["x"]),
+					int(block_data["y"])
+				)
+			)
+			block.set_rot(
+				int(block_data["r"])
+			)
+			
+			if bool(block_data["curr"]):
+				curr_block = block
 			
 			# Add block to scene
 			add_child(block)
@@ -114,8 +133,7 @@ func _exit_tree():
 			"score": score,
 			"level": level,
 			"speed": speed,
-			"curr_block": curr_block,
-			"next_block": next_block
+			"next": next_block.get_type()
 		}
 	))
 	
@@ -124,8 +142,11 @@ func _exit_tree():
 		game_state.store_line(to_json(
 			{
 				"type": block.get_type(),
-				"pos": block.get_pos(),
-				"rot": block.get_rot()
+				"x": block.get_x(),
+				"y": block.get_y(),
+				"r": block.get_rot(),
+				"c": block.get_color(),
+				"curr": true if block == curr_block else false
 			}
 		))
 		
@@ -168,6 +189,9 @@ func _on_Timer_timeout():
 		score += rows_removed * 10
 		if rows_removed == 4:
 			score += 60
+		
+		# Update level
+		level = (score % 100) + 1
 		
 		# Add next block to scene
 		add_next_block()

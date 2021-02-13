@@ -15,6 +15,7 @@ script = ExtResource( 2 )
 margin_right = 576.0
 margin_bottom = 1024.0
 mouse_filter = 2
+color = Color( 0.937255, 0.937255, 0.937255, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -43,9 +44,9 @@ __meta__ = {
 }
 
 [node name="Level" type="VBoxContainer" parent="Menu/Container"]
-margin_top = 148.0
+margin_top = 132.0
 margin_right = 128.0
-margin_bottom = 238.0
+margin_bottom = 222.0
 custom_constants/separation = 32
 
 [node name="Text" parent="Menu/Container/Level" instance=ExtResource( 5 )]
@@ -59,9 +60,9 @@ margin_bottom = 90.0
 text = "1"
 
 [node name="Score" type="VBoxContainer" parent="Menu/Container"]
-margin_top = 366.0
+margin_top = 350.0
 margin_right = 128.0
-margin_bottom = 456.0
+margin_bottom = 440.0
 custom_constants/separation = 32
 
 [node name="Text" parent="Menu/Container/Score" instance=ExtResource( 5 )]
@@ -75,9 +76,9 @@ margin_bottom = 90.0
 text = "0"
 
 [node name="Next" type="VBoxContainer" parent="Menu/Container"]
-margin_top = 584.0
+margin_top = 568.0
 margin_right = 128.0
-margin_bottom = 645.0
+margin_bottom = 661.0
 custom_constants/separation = 32
 
 [node name="Text" parent="Menu/Container/Next" instance=ExtResource( 5 )]
@@ -88,10 +89,14 @@ text = "Next"
 margin_top = 61.0
 margin_bottom = 61.0
 
+[node name="HeightGap2" parent="Menu/Container/Next" instance=ExtResource( 7 )]
+margin_top = 93.0
+margin_bottom = 93.0
+
 [node name="Menu" type="VBoxContainer" parent="Menu/Container"]
-margin_top = 773.0
+margin_top = 789.0
 margin_right = 128.0
-margin_bottom = 875.0
+margin_bottom = 891.0
 custom_constants/separation = 32
 
 [node name="Menu" parent="Menu/Container/Menu" instance=ExtResource( 1 )]
