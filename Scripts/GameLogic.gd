@@ -195,7 +195,7 @@ func _on_Timer_timeout():
 			score += 60
 		
 		# Update level
-		level = (score % 100) + 1
+		level = floor(score / 100) + 1
 		
 		# Add next block to scene
 		add_next_block()
