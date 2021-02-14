@@ -24,6 +24,3 @@ func _calculate_swipe(swipe_end):
 			_on_StartGame_button_down()
 		else:
 			_on_Settings_button_down()
-
-
-

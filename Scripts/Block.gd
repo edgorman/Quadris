@@ -74,3 +74,14 @@ func set_pos(v):
 
 func set_rot(r):
 	set_rotation_degrees(r)
+
+func set_ghost():
+	for child in get_children():
+		if child is ColorRect:
+			color = child.get_frame_color()
+			color.a = 0.2
+			child.set_frame_color(color)
+		if child is Line2D:
+			color = child.get_default_color()
+			color.a = 0.2
+			child.set_default_color(color)

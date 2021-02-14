@@ -5,7 +5,7 @@ signal update_level(value)
 signal update_block(value)
 
 # Debug variables
-onready var CLEAN_LOAD = false
+onready var CLEAN_LOAD = true
 onready var ALLOW_UP_DIRECTION = false
 
 # Constant variables
@@ -42,6 +42,7 @@ var level
 var speed
 var curr_block
 var next_block
+var ghost_block
 
 # Function executed when scene enters tree
 func _ready():
@@ -111,6 +112,9 @@ func _ready():
 			
 			# Add block to scene
 			add_child(block)
+	
+	# Set ghost block
+	update_ghost_block()
 	
 	# Update score and label
 	emit_signal("update_score", score)
@@ -234,6 +238,8 @@ func _on_Controls_move_block(direction):
 					curr_block.get_y() + direction[1]
 				)
 			)
+		# Update ghost block
+		update_ghost_block()
 
 # Rotate block in the angle passed
 func _on_Controls_rotate_block():
@@ -250,6 +256,9 @@ func _on_Controls_rotate_block():
 		_:
 			if can_move_to(NO_DIRECTION, 90):
 				curr_block.set_rot(90)
+	
+	# Update ghost block
+	update_ghost_block()
 
 # Return an instance of a random block
 func get_random_block():
@@ -282,15 +291,16 @@ func add_next_block():
 	# Add block to scene
 	curr_block = next_block
 	add_child(curr_block)
+	update_ghost_block()
 	
 	# Generate next block
 	next_block = get_random_block()
 
 # Return whether can move in direction
-func can_move_to(direction := Vector2(0, 0), rotation := curr_block.get_rot()):
+func can_move_to(direction := Vector2(0, 0), rotation := curr_block.get_rot(), move_block := curr_block):
 	# Calculate moved pos of inner blocks
 	var moved_blocks = []
-	for inner in curr_block.get_blocks(rotation):
+	for inner in move_block.get_blocks(rotation):
 		moved_blocks.append([
 			inner[0] + direction[0],
 			inner[1] + direction[1]
@@ -307,6 +317,9 @@ func can_move_to(direction := Vector2(0, 0), rotation := curr_block.get_rot()):
 	
 	# Check if overlaps with other blocks
 	for block in get_children():
+		# Ignore ghost block
+		if block == ghost_block:
+			continue
 		# Ignore current block
 		if block == curr_block:
 			continue
@@ -324,6 +337,9 @@ func is_row_complete(idx):
 	
 	# For each block
 	for block in get_children():
+		# Ignore ghost block
+		if block == ghost_block:
+			continue
 		# Check if inner block is at row index
 		for inner in block.get_blocks():
 			if inner[1] == idx:
@@ -331,3 +347,20 @@ func is_row_complete(idx):
 	
 	# Return true if row complete
 	return len(cols) == SCREEN_COLS
+
+func update_ghost_block():
+	if ghost_block != null:
+		remove_child(ghost_block)
+	
+	ghost_block = curr_block.duplicate()
+	ghost_block.init(BLOCK_SIZE, BLOCK_SCALE, BLOCK_OFFSET)
+	ghost_block.set_pos(curr_block.get_pos())
+	while can_move_to(DOWN_DIRECTION, ghost_block.get_rot(), ghost_block):
+		ghost_block.set_pos(
+			Vector2(
+				ghost_block.get_x() + DOWN_DIRECTION[0],
+				ghost_block.get_y() + DOWN_DIRECTION[1]
+			)
+		)
+	ghost_block.set_ghost()
+	add_child(ghost_block)
